@@ -8,7 +8,6 @@ document.getElementById('convertir').addEventListener('click', () => {
         return;
     }
 
-    // RUTA ABSOLUTA a practica_3/backend
     fetch(`http://localhost/practica_3/backend/convertidor.php?from=${from}&to=${to}`)
         .then(res => {
             if (!res.ok) throw new Error("Respuesta del servidor no OK");
