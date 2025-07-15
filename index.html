@@ -1,41 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Conversión de Monedas</title>
-  <link rel="stylesheet" href="estilos.css">
+    <meta charset="UTF-8">
+    <title>Conversor de Monedas</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Conversor de Monedas</h1>
+    <div class="contenedor">
+        <h1>Conversor de Monedas</h1>
 
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" id="cantidad" placeholder="Ej: 100" required>
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" placeholder="Ingrese el monto">
 
-    <label for="from">De:</label>
-    <select id="from">
-      <option value="USD">USD</option>
-      <option value="CRC">CRC</option>
-      <option value="EUR">EUR</option>
-      <option value="GBP">GBP</option>
-      <option value="JPY">JPY</option>
-    </select>
+        <label for="moneda-origen">Moneda origen:</label>
+        <select id="moneda-origen">
+            <option value="USD">USD</option>
+            <option value="CRC">CRC</option>
+            <option value="EUR">EUR</option>
+        </select>
 
-    <label for="to">A:</label>
-    <select id="to">
-      <option value="USD">USD</option>
-      <option value="CRC">CRC</option>
-      <option value="EUR">EUR</option>
-      <option value="GBP">GBP</option>
-      <option value="JPY">JPY</option>
-    </select>
+        <label for="moneda-destino">Moneda destino:</label>
+        <select id="moneda-destino">
+            <option value="USD">USD</option>
+            <option value="CRC">CRC</option>
+            <option value="EUR">EUR</option>
+        </select>
 
-    <button id="convertir">Convertir</button>
+        <button id="convertir">Convertir</button>
 
-    <p id="resultado"></p>
-    <p id="error"></p>
-  </div>
+        <h2>Resultado: <span id="resultado">-</span></h2>
+    </div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

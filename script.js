@@ -1,30 +1,29 @@
-document.getElementById('convertir').addEventListener('click', function () {
-    const cantidad = parseFloat(document.getElementById('cantidad').value);
-    const from = document.getElementById('from').value;
-    const to = document.getElementById('to').value;
-    const resultado = document.getElementById('resultado');
-    const error = document.getElementById('error');
+document.getElementById('convertir').addEventListener('click', () => {
+    const from = document.getElementById('moneda-origen').value;
+    const to = document.getElementById('moneda-destino').value;
+    const amount = parseFloat(document.getElementById('cantidad').value);
 
-    resultado.textContent = '';
-    error.textContent = '';
-
-    if (isNaN(cantidad) || cantidad <= 0) {
-        error.textContent = 'Por favor ingresa una cantidad válida.';
+    if (isNaN(amount)) {
+        alert("Por favor, ingresa una cantidad válida.");
         return;
     }
 
-    fetch(`backend/convertidor.php?from=${from}&to=${to}`)
-        .then(response => response.json())
+    // RUTA ABSOLUTA a practica_3/backend
+    fetch(`http://localhost/practica_3/backend/convertidor.php?from=${from}&to=${to}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Respuesta del servidor no OK");
+            return res.json();
+        })
         .then(data => {
             if (data.rate) {
-                const conversion = cantidad * data.rate;
-                resultado.textContent = `Resultado: ${conversion.toFixed(2)} ${to}`;
+                const resultado = amount * data.rate;
+                document.getElementById('resultado').textContent = `${resultado.toFixed(2)} ${to}`;
             } else {
-                error.textContent = data.error || 'Error en la conversión.';
+                document.getElementById('resultado').textContent = "Error: " + data.error;
             }
         })
         .catch(err => {
-            error.textContent = 'Error al contactar con el servidor.';
             console.error(err);
+            alert("Error de conexión con el servidor.");
         });
 });
