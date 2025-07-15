@@ -1,24 +1,37 @@
 <?php
-header('Content-Type: application/json');
+header("Content-Type: application/json");
+echo json_encode(["rate" => 123.45]);
 
-$from = $_GET['from'] ?? null;
-$to = $_GET['to'] ?? null;
+$from = strtoupper($_GET['from'] ?? '');
+$to = strtoupper($_GET['to'] ?? '');
+$tasas = [];
 
-if (!$from || !$to || $from === $to) {
-    echo json_encode(['error' => 'Parámetros inválidos']);
+// Ruta relativa desde este archivo hacia tasas.txt
+$archivo = __DIR__ . "/tasas.txt";
+
+if (!file_exists($archivo)) {
+    http_response_code(500);
+    echo json_encode(["error" => "Archivo de tasas no encontrado."]);
     exit;
 }
 
-$tasas = [
-    "USD_CRC" => 540.50,
-    "CRC_USD" => 0.00185
-];
+// Leer tasas desde el archivo
+$lineas = file($archivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-$key = "{$from}_{$to}";
-
-if (isset($tasas[$key])) {
-    echo json_encode(['rate' => $tasas[$key]]);
-} else {
-    echo json_encode(['error' => 'Tasa no disponible']);
+foreach ($lineas as $linea) {
+    list($moneda, $valor) = explode('=', trim($linea));
+    $tasas[trim($moneda)] = floatval(trim($valor));
 }
+
+if (isset($tasas[$from]) && isset($tasas[$to])) {
+    $tasa = $tasas[$to] / $tasas[$from];
+    echo json_encode(["rate" => $tasa]);
+} else {
+    http_response_code(400);
+    echo json_encode(["error" => "Moneda no válida o no encontrada."]);
+}
+
+
+
+
 ?>
